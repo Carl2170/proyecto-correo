@@ -12,6 +12,7 @@ import java.util.Map;
 import patronResponsabilidad.ManejadorComandoAbs;
 import patronResponsabilidad.ManejadorComandoCliente;
 import patronResponsabilidad.ManejadorComandoProducto;
+import patronResponsabilidad.ManejadorComandoReseña;
 import patronResponsabilidad.ManejadorComandoUsuario;
 
 /**
@@ -38,11 +39,13 @@ public class EmailEnvio {
         ManejadorComandoAbs usuario = new ManejadorComandoUsuario();
         ManejadorComandoAbs cliente = new ManejadorComandoCliente();
         ManejadorComandoAbs producto = new ManejadorComandoProducto();
+        ManejadorComandoAbs reseña = new ManejadorComandoReseña();
 
         // Configura la cadena: principal -> usuario
         usuario.setManejadorComando(cliente);
         cliente.setManejadorComando(producto);
-   
+        producto.setManejadorComando(reseña);
+        
         return usuario;  // Retorna el manejador inicial de la cadena
     }
 
