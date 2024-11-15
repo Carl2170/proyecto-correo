@@ -29,6 +29,7 @@ public class EmailEnvio {
         this.validador= new Validador(); 
         this.smtp = new SMTP(Constants.MAIL_SERVER_HOST, Constants.MAIL_USERMAIL);
         this.cadena = crearCadenaManejadores();
+
     }
     
     //enlazar todos los manejadores
@@ -58,7 +59,8 @@ public class EmailEnvio {
                         System.out.println("Comando válido: " + email.getAsunto());
                        
                      //   String resultado = cadena.procesar(email.getAsunto());
-                     
+                        
+
                         //Transferencia del comando a la cadena de responsabilidad
                         Map<String, Object> resultado = cadena.procesar(email.getAsunto());
                          
@@ -68,12 +70,14 @@ public class EmailEnvio {
                         if(esListado){
                         List<String> columnas = (List<String>)resultado.get("columnas");
                         List<Map<String, String>> usuariosFormateados = (List<Map<String, String>>) resultado.get("body");
-
-                        smtp.enviarCorreo( asunto,"",email.getReceptor(),esListado,columnas, usuariosFormateados);
+                            
+                       // smtp.enviarCorreo( asunto,"",email.getReceptor(),esListado,columnas, usuariosFormateados);
                             
                         }else{    
                          String cuerpo = (String) resultado.get("body");   
-                         smtp.enviarCorreo( asunto,cuerpo, email.getReceptor(),esListado,null,null);   
+                        // smtp.enviarCorreo( asunto,cuerpo, email.getReceptor(),esListado,null,null);   
+                            System.out.println(asunto);
+                            System.out.println(cuerpo.toString());
                         }
                     } else {
                         // Comando inválido: enviar mensaje de error al remitente

@@ -1,6 +1,7 @@
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\Conexion\DataBaseManager.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\patronResponsabilidad\ManejadorComandoCliente.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\patronResponsabilidad\ManejadorComando.java
+C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\services\ClienteDAO.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\services\UsuarioDAO.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\config\ObservadorCorreo.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\email\Email.java
@@ -9,6 +10,7 @@ C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\Co
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\config\SMTP.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\com\mycompany\grupo13sa\tecnoweb\Grupo13saTecnoweb.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\config\DatabaseConfig.java
+C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\models\Cliente.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\config\POP.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\Utils\Constants.java
 C:\Users\C.Vargas\Documents\NetBeansProjects\grupo13sa-tecnoweb\src\main\java\Utils\Validador.java

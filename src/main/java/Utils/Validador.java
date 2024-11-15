@@ -38,14 +38,18 @@ public class Validador {
                                                            + "LISTARCLIENTE|"
                                                            + "CREARCLIENTE|"
                                                            + "EDITARCLIENTE|"
-                                                           + "ELIMINARCLIENTE)\\\\[[^\\\\s\\\\[\\\\]]+\\\\]$";  // indica si hay parametros
-    
+                                                           + "ELIMINARCLIENTE)"
+                                                           //+"\\\\[[^\\\\s\\\\[\\\\],]+(\\\\s*,\\\\s*[^\\\\s\\\\[\\\\],]+)*\\\\]$";
+                                                          // + "\\\\[[^\\\\s\\\\[\\\\]]+\\\\]$";  // indica si hay parametros
+                                                            + "\\[.*\\]$";  // indica si hay parametros
     public ValidacionResultado VerificarProceso(String comando) {
+        
+        
         // Valida si el comando cumple con la estructura general
         if (comando.matches(estructuraGeneralComando)) {
              return new ValidacionResultado(true, null);
         } else {
-            System.out.println("Error: La estructura del comando es incorrecta.");
+            System.out.println("Error comando general: La estructura del comando es incorrecta.");
                  return new ValidacionResultado(false, "Error: La estructura del comando es incorrecta.");
         }
     }
@@ -75,7 +79,7 @@ public class Validador {
         if (comandoSinSaltos.matches(estructuraGeneralComando)) {
             return new ValidacionResultado(true, null);
         } else {
-            System.out.println("Error: La estructura del comando es incorrecta.");
+            System.out.println("Error Saltos: La estructura del comando es incorrecta.");
             return new ValidacionResultado(false, "Error: La estructura del comando es incorrecta.");
         }
     } else {

@@ -18,7 +18,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ObservadorCorreo implements Runnable{
     private POP popClient;
-    private int previousMailCount = 16; // Conteo previo de correos  //ver si se puede obtener dinamicamente
+    private int previousMailCount = 18; // Conteo previo de correos  //ver si se puede obtener dinamicamente
     private final int MAX_REINTENTOS=3;
     
     private Thread procesadorHilo;

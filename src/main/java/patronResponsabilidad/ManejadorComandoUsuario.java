@@ -29,9 +29,10 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
     private List<String> errores ;
     private String[] filtros;
     
+    
     public ManejadorComandoUsuario(){
         this.comandos = "^(LISTAR|CREAR|EDITAR|ELIMINAR)(USUARIO|USUARIOS)\\[.*\\]$";
-        this.filtros = new String[] {"*","id", "name", "email", "email_verified_at", "role", "status"};
+        this.filtros = new String[] {"*","id", "name", "email", "email_verified_at", "status"};
 
         this.usuario = new UsuarioDAO();
         this.errores = new ArrayList<>();
@@ -48,7 +49,11 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
     @Override
     public Map<String, Object> procesar(String command) {
         if(!VerificarProceso(command)){
+            System.out.println("entro aqui");
+            if (siguienteManejadorComando != null) {
              return siguienteManejadorComando.procesar(command);
+            }
+            System.out.println("siguiente manejador nulo");
         }
         Map<String, Object> resultado= new HashMap<>(); ;
         
@@ -63,12 +68,13 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
             
         } else if (command.startsWith("EDITARUSUARIO")) {
             System.out.println("Entro en EDITARUSUARIO");
-
             resultado = ModificarUsuario(command) ;
+            
         } else if (command.startsWith("ELIMINARUSUARIO")) {
             System.out.println("Entro en ELIMINARUSUARIO");
-            return EliminarUsuario(command);
-        }
+            return  EliminarUsuario(command);  
+        } 
+        System.out.println("no entro a ninugno");
         return resultado;
     }
        
@@ -275,8 +281,12 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
                 Object valor = entry.getValue();
 
                 // Evitar modificar el 'id', ya que no es modificable
-                if (!columna.equals("id")) {
+                if (!columna.equals("id") && !usuario.existeRegistro(columna, valor)) {
                     exito = usuario.actualizarRegistro(columna, valor, "id", id);
+                }else{
+                  response.put("subject", "Problema en la edición");
+                 response.put("body", "El usuario con ID " + id + " ya tiene el valor: "+ valor +" en la columna: "+columna);   
+                return response;
                 }
             }
 
@@ -299,7 +309,7 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
    public boolean verificarParametrosModificacion(Map<String, Object> criterios) {
     errores.clear();
 
-    Set<String> parametrosValidos = Set.of("id","name", "email", "password", "photo", "phone", "address", "role", "status");
+    Set<String> parametrosValidos = Set.of("id","name", "email", "password", "photo", "phone", "address", "role","status");
 
     for (Map.Entry<String, Object> criterio : criterios.entrySet()) {
         String parametro = criterio.getKey();
@@ -427,8 +437,8 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
         if (!validarDireccion(parametros[6])) {
             errores.add("La dirección no es válida.");
         }
-        if (!validarTextoConEspacios(parametros[7])) {
-            errores.add("El rol no es válido. Debe ser un texto que represente el rol (por ejemplo, 'admin' o 'cliente').");
+        if (!validarTextoConEspacios(parametros[7]) || !"USUARIO".equals(parametros[7])) {
+            errores.add("El rol no es válido. Debe ser un texto que represente el rol ('USUARIO').");
         }
         if (!validarTextoConEspacios(parametros[8])) {
             errores.add("El estado no es válido. Debe ser un texto que represente el estado (por ejemplo, 'activo' o 'inactivo').");
@@ -448,7 +458,7 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
     
     //Genera la estructura correcta como ejemplo
     public String generarEstructuraCorrecta() {
-        return "[nombre, email, fecha_verificacion, password, foto, telefono, direccion, rol, estado]";
+        return "[nombre, email, fecha_verificacion, password, foto, telefono, direccion, estado]";
     }
 
     // Método auxiliar para obtener la descripción de cada parámetro
@@ -460,8 +470,8 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
                "foto: URL de la foto del usuario \n" +
                "telefono: Número de teléfono del usuario (Solo numeros)\n" +
                "direccion: Dirección del usuario\n" +
-               "rol: Rol asignado al usuario (por ejemplo, 'admin' o 'cliente')\n" +
-               "estado: Estado del usuario (String, por ejemplo, 'activo' o 'inactivo')";
+                "rol: el rol  debe ser: USUARIO\n"+
+               "estado: Estado del usuario (String, por ejemplo, 'ACTIVO' o 'INACTIVO')";
 }
     
     public boolean esTipoValido(String columna, Object valor) {

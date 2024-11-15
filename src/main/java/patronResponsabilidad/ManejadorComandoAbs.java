@@ -27,17 +27,6 @@ public abstract class ManejadorComandoAbs implements ManejadorComando {
     }
     
     public abstract boolean VerificarProceso(String comando);
-
-    
-//    @Override
-//    public String  manejador(String comando) {
-//          if(VerificarProceso(comando)){
-//              return procesar(comando);
-//          }else if(siguienteManejadorComando != null){
-//              return siguienteManejadorComando.manejador(comando);
-//          }
-//          return "Error, comando desconocido o parametros invalidos";
-//    }
     
     public abstract Map<String, Object> procesar(String command);
     
@@ -335,5 +324,7 @@ public abstract class ManejadorComandoAbs implements ManejadorComando {
         return response;
     }
 
-    
+    public boolean validarRol(String comando) {
+        return ("ADMIN".equals(comando)) || ("USUARIO".equals(comando)) || ("LOCATARIO".equals(comando)) ;
+    }
 }
