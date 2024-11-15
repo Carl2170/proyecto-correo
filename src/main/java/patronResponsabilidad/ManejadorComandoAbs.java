@@ -95,6 +95,14 @@ public abstract class ManejadorComandoAbs implements ManejadorComando {
             return false;
         }
     }
+    
+    public boolean convertirABooleano(String booleano) {
+       return booleano.equalsIgnoreCase("true");
+   }
+    
+    public boolean validarBooleano(String booleano){
+    return booleano.equalsIgnoreCase("true") || booleano.equalsIgnoreCase("false");
+    }
 
     protected Timestamp convertirAFecha(String fecha){
           // Definir el formato esperado de la fecha

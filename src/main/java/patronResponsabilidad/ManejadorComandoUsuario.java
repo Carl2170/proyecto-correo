@@ -80,10 +80,10 @@ public class ManejadorComandoUsuario extends ManejadorComandoAbs{
        
     //funcion con validaciones para crear el usuario en la BD 
     public Map<String, Object>  crearUsuario(String comando){
-        boolean resultado;
-        Map<String, Object> response = new HashMap<>();  
-        String[] parametros = extraerParametros(comando);
-        Map<String, Object> validacionParametros = verificarCantidadParametros(parametros,cantidadParametros);
+            boolean resultado;
+            Map<String, Object> response = new HashMap<>();  
+            String[] parametros = extraerParametros(comando);
+            Map<String, Object> validacionParametros = verificarCantidadParametros(parametros,cantidadParametros);
 
         // Si hay un error en la validación de cantidad de parámetros, devuelve el error y termina la función
         if (!"Correcto".equals(validacionParametros.get("body"))) {

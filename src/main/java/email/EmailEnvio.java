@@ -95,10 +95,7 @@ public class EmailEnvio {
                                             null,
                                             null);
                     }
- 
-    }
-    
-    
+    } 
 /*CASOS DE USO:(APROBADOS)
 CU1. Gestión de usuarios(Administrativos, Cliente).
 CU2. Gestión de Productos.

@@ -5,24 +5,19 @@
 package services;
 
 import config.DatabaseConfig;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import models.Reseña;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
+import models.Menu;
 
-public class ReseñaDAO {
-
-    // Verifica si un registro existe en la tabla de reseñas por una columna específica
+public class MenuDAO {
+    
+    // Verifica si existe un registro en la tabla "menu" según un valor en una columna
     public boolean existeRegistro(String columna, Object valor) {
-        String query = "SELECT COUNT(*) FROM reviews WHERE " + columna + " = ?";
+        String query = "SELECT COUNT(*) FROM menu WHERE " + columna + " = ?";
         
         try (Connection conn = DatabaseConfig.obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setObject(1, valor);
+            stmt.setObject(1, valor); // Establece el valor de manera dinámica
             
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -36,81 +31,69 @@ public class ReseñaDAO {
         
         return false; // Retorna false si no encuentra el registro o si ocurre algún error
     }
-
-    // Método para insertar una nueva reseña en la base de datos
-    public boolean insertarReseña(String comentario, int calificacion, String estado, int clienteId, int usuarioId) {
-        String sql = "INSERT INTO reviews (comment, raiting, status, client_id, user_id) "
-                   + "VALUES (?, ?, ?, ?, ?)";
+    
+    // Método para insertar un nuevo menú en la base de datos
+    public boolean insertarMenu(String menuName, String image) {
+        String sql = "INSERT INTO menu (menu_name, image) VALUES (?, ?)";
         
-        try (Connection conn = DatabaseConfig.obtenerConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, comentario);
-            stmt.setInt(2, calificacion);
-            stmt.setString(3, estado);
-            stmt.setInt(4, clienteId);
-            stmt.setInt(5, usuarioId);
+        try (Connection conn = DatabaseConfig.obtenerConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, menuName);
+            stmt.setString(2, image);
             
             int filasAfectadas = stmt.executeUpdate();
             return filasAfectadas > 0; // Devuelve true si se insertaron filas correctamente
         } catch (SQLException e) {
-            System.out.println("Error en la inserción de reseña");
-            e.printStackTrace();
+            System.out.println("Error al insertar el menú: " + e.getMessage());
             return false; // En caso de error, devuelve false
         }
     }
 
-    // Obtener todas las reseñas
-    public List<Reseña> obtenerTodas() {
-        List<Reseña> reseñas = new ArrayList<>();
-        String query = "SELECT id, comment, raiting, status, client_id, user_id FROM reviews";
+    // Método para obtener todos los menús
+    public List<Menu> obtenerTodos() {
+        List<Menu> menus = new ArrayList<>();
+        String query = "SELECT id, menu_name, image FROM menu";
 
         try (Connection conn = DatabaseConfig.obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Reseña reseña = new Reseña();
-                reseña.setId(rs.getInt("id"));
-                reseña.setComentario(rs.getString("comment"));
-                reseña.setCalificacion(rs.getInt("raiting"));
-                reseña.setStatus(rs.getString("status"));
-                reseña.setClienteId(rs.getInt("client_id"));
-                reseña.setUserId(rs.getInt("user_id"));
+                Menu menu = new Menu();
+                menu.setId(rs.getInt("id"));
+                menu.setMenuName(rs.getString("menu_name"));
+                menu.setImage(rs.getString("image"));
                 
-                reseñas.add(reseña);
+                menus.add(menu);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return reseñas;
+        return menus;
     }
 
-    // Eliminar reseña con base en criterios
-    public boolean eliminarReseña(Map<String, Object> criterios) {
-        StringBuilder query = new StringBuilder("DELETE FROM reviews WHERE ");
+    // Método para eliminar un menú
+    public boolean eliminarMenu(Map<String, Object> criterios) {
+        StringBuilder query = new StringBuilder("DELETE FROM menu WHERE ");
         List<Object> parametros = new ArrayList<>();
 
         // Agregar condiciones según los criterios proporcionados
         boolean esPrimerCriterio = true;
         if (criterios.containsKey("id")) {
             if (!esPrimerCriterio) query.append(" AND ");
+
             query.append("id = ?");
-            parametros.add(criterios.get("id"));
+            parametros.add(Integer.parseInt((String) criterios.get("id")));
             esPrimerCriterio = false;
         }
 
-        if (criterios.containsKey("client_id")) {
+        if (criterios.containsKey("menu_name")) {
             if (!esPrimerCriterio) query.append(" AND ");
-            query.append("client_id = ?");
-            parametros.add(criterios.get("client_id"));
+            query.append("menu_name = ?");
+            parametros.add(criterios.get("menu_name"));
             esPrimerCriterio = false;
-        }
-
-        if (criterios.containsKey("user_id")) {
-            if (!esPrimerCriterio) query.append(" AND ");
-            query.append("user_id = ?");
-            parametros.add(criterios.get("user_id"));
         }
 
         // Si no hay criterios para eliminar, devolver false
@@ -138,19 +121,19 @@ public class ReseñaDAO {
         }
     }
 
-    // Actualizar una reseña en la base de datos
-    public boolean actualizarReseña(String columna, Object valor, String columnaClave, Object valorClave) {
-        String query = "UPDATE reviews SET " + columna + " = ? WHERE " + columnaClave + " = ?";
+    // Método para actualizar un registro de menú
+    public boolean actualizarRegistro(String columna, Object valor, String columnaClave, Object valorClave) {
+        String query = "UPDATE menu SET " + columna + " = ? WHERE " + columnaClave + " = ?";
 
         try (Connection conn = DatabaseConfig.obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-             stmt.setObject(1, valor);
+            stmt.setObject(1, valor);
             stmt.setObject(2, valorClave);
 
             int filasAfectadas = stmt.executeUpdate();
             return filasAfectadas > 0; // Si se actualizó al menos una fila, se retornará true
         } catch (SQLException e) {
-            System.out.println("Error al actualizar la reseña: " + e.getMessage());
+            System.out.println("Error al actualizar el registro: " + e.getMessage());
         }
 
         return false; // Si no se actualizó ninguna fila, retornamos false
@@ -158,7 +141,7 @@ public class ReseñaDAO {
 
     // Método auxiliar para obtener el valor actual de una columna
     public Object obtenerValorActual(String columnaClave, Object valorClave) {
-        String query = "SELECT " + columnaClave + " FROM reviews WHERE id = ?";
+        String query = "SELECT " + columnaClave + " FROM menu WHERE id = ?";
 
         try (Connection conn = DatabaseConfig.obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -175,4 +158,3 @@ public class ReseñaDAO {
         return null; // Si no se encuentra el valor actual
     }
 }
-

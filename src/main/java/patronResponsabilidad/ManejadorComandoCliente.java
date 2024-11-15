@@ -130,7 +130,8 @@ public class ManejadorComandoCliente extends ManejadorComandoAbs{
                         + detalleParametros
                            );
         }
-        return response;    }
+        return response;   
+    }
     
     public Map<String, Object> ListarClientes(String comando){
            Map<String, Object> response = new HashMap<>();
@@ -332,6 +333,7 @@ public class ManejadorComandoCliente extends ManejadorComandoAbs{
         System.out.println("Todos los parámetros son válidos.");
         return true;
 }
+   
     private String generarEstructuraCorrecta() {
         return "[nombre, email, fecha_verificacion, password, foto, telefono, direccion, rol, estado]";
     }
@@ -455,7 +457,6 @@ public class ManejadorComandoCliente extends ManejadorComandoAbs{
            "rol: Rol asignado al cliente(por ejemplo,'CLIENTE')\n" +
            "estado: Estado del cliente(String, por ejemplo, 'activo' o 'inactivo')";
 }
-
 
      public boolean esTipoValido(String columna, Object valor) {
       boolean res = false;
