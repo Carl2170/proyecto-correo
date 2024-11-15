@@ -18,7 +18,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ObservadorCorreo implements Runnable{
     private POP popClient;
-    private int previousMailCount = 12;  // Conteo previo de correos  //ver si se puede obtener dinamicamente
+    private int previousMailCount = 16; // Conteo previo de correos  //ver si se puede obtener dinamicamente
+    private final int MAX_REINTENTOS=3;
+    
     private Thread procesadorHilo;
     private BlockingQueue<Email> colaCorreos;
   
@@ -32,9 +34,32 @@ public class ObservadorCorreo implements Runnable{
         procesadorHilo = new Thread(() -> {
             while (true) {
                 try {
-                    Email email = colaCorreos.take();
-                    System.out.println(email);
-                    new EmailEnvio(email).procesoEnvioEmail();
+//                    Email email = colaCorreos.take();
+//                    System.out.println(email);
+//                    new EmailEnvio(email).procesoEnvioEmail();
+                  
+                 //con reitentos
+                   Email email = colaCorreos.take();
+                    int reintentos = 0;
+                    boolean procesado = false;
+
+                    // Reintenta hasta que el correo sea enviado o alcance el máximo de reintentos
+                    while (!procesado && reintentos < MAX_REINTENTOS) {
+                        try {
+                            new EmailEnvio(email).procesoEnvioEmail();
+                            procesado = true; // Marcamos como procesado si no ocurre excepción
+                        } catch (Exception e) {
+                            reintentos++;
+                            System.err.println("Error enviando correo. Reintentando (" + reintentos + " de " + MAX_REINTENTOS + ")");
+                            if (reintentos == MAX_REINTENTOS) {
+                                System.err.println("Máximo de reintentos alcanzado. Reinsertando correo en la cola.");
+                                colaCorreos.put(email);  // Reinsertamos el correo en la cola
+                            }
+                            Thread.sleep(5000);  // Espera entre reintentos
+                        }
+                    }
+
+
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
