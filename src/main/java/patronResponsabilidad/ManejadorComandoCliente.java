@@ -290,7 +290,8 @@ public class ManejadorComandoCliente extends ManejadorComandoAbs{
             response.put("body", "Los parámetros no son válidos."+ errores);
         }
 
-        return response;    }
+        return response;    
+    }
     
     public boolean validarParametros(String[] parametros){ 
         errores.clear(); 

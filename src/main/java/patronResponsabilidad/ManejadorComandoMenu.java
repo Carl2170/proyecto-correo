@@ -40,9 +40,32 @@ public class ManejadorComandoMenu extends ManejadorComandoAbs{
     }
 
     @Override
-    public Map<String, Object> procesar(String command) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+public Map<String, Object> procesar(String command) {
+    if (!VerificarProceso(command)) {
+        return siguienteManejadorComando.procesar(command);
     }
+    Map<String, Object> resultado = new HashMap<>();
+
+    // Implementa lógica para listar, crear, modificar o eliminar menú según el comando
+    if (command.startsWith("LISTARMENU")) {
+        System.out.println("Entro en LISTARMENU");
+        resultado = ListarMenus(command);
+
+    } else if (command.startsWith("CREARMENU")) {
+        System.out.println("Entro en CREARMENU");
+        resultado = crearMenu(command);
+
+    } else if (command.startsWith("EDITARMENU")) {
+        System.out.println("Entro en EDITARMENU");
+        resultado = EditarMenu(command);
+
+    } else if (command.startsWith("ELIMINARMENU")) {
+        System.out.println("Entro en ELIMINARMENU");
+        return eliminarMenu(command);
+    }
+    return resultado;
+}
+
     
     public Map<String, Object> crearMenu(String comando) {
        boolean resultado;
@@ -94,10 +117,9 @@ public class ManejadorComandoMenu extends ManejadorComandoAbs{
        }
        return response;
    }
-
-
-
-    public Map<String, Object> ListarMenus(String comando) {
+    
+    public Map<String, Object> ListarMenus(String comando) 
+    {
         Map<String, Object> response = new HashMap<>();
         String[] parametro = extraerParametros(comando);
         List<Menu> listaMenus = new ArrayList<>();
@@ -152,8 +174,6 @@ public class ManejadorComandoMenu extends ManejadorComandoAbs{
 
         return response;
     }
-
-
     public Map<String, Object> eliminarMenu(String comando) {
         errores.clear();
         String parametros = extraerContenidoCorchetes(comando);
