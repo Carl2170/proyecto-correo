@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Center</title>
+    <style>
+        body { font-family: Arial, sans-serif; 
+            margin: 20px; 
+            position: relative; 
+            padding-top: 120px;
+
+        }
+
+        p { font-size: 16px; line-height: 1.6; }
+        .titulo{
+            margin-top: 10px;
+            padding: 10px;
+            color: #1E90FF;
+        }
+        .contenido {
+            font-size: 16px; 
+            line-height: 1.6;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .important { color: red; font-weight: bold; }
+        .footer { font-size: 12px; color: #888; }
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            height: auto;
+            z-index: 10;
+
+        }
+        .content {
+            margin-left: 120px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo en la esquina superior izquierda -->
+    <img src="https://res.cloudinary.com/dnkvrqfus/image/upload/v1731172651/nevi4crc6tizxifyfxod.png" alt="Logo de la empresa" class="logo">
+    <!-- Contenido del mensaje -->
+     <div class="content">
+        <h1 class="titulo">{{title}}</h1>
+        <p class="contenido">{{message}}</p>
+        <!-- <p class="important">{{importantMessage}}</p> -->
+     </div>
+    <!-- Pie de página -->
+    <div class="footer">
+        <p>Patio de comida Mega Center</p>
+    </div>
+</body>
+</html>
